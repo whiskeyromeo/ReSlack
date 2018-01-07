@@ -1,0 +1,17 @@
+.menuItems { 
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.menuTitle {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.navbar {
+    height : 60px;
+}

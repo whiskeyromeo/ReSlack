@@ -1,0 +1,31 @@
+
+.form-container {
+    padding: 10px;
+    border: 1px solid lightgrey;
+    -webkit-box-shadow: 4px 3px 5px 0px rgba(0,0,0,0.21);
+    -moz-box-shadow: 4px 3px 5px 0px rgba(0,0,0,0.21);
+    box-shadow: 4px 3px 5px 0px rgba(0,0,0,0.21);
+    margin: 0 0 0 0;
+}
+
+
+.ui.form.infoForm {
+    padding: 15px;
+    border: 1px solid lightgrey;
+    background-color: blanchedalmond;
+}
+
+#addPostButton.ui.clearing.segment {
+    background-color: blanchedalmond;
+    border: none;
+    box-shadow: none;
+    padding: 0px;
+}
+
+.field {
+    position: relative;
+    width: 100%;
+
+    margin-top: 1rem;
+    margin-bottom:1.7rem;
+}
