@@ -9,6 +9,8 @@ import Blog from './Blog';
 
 import customHistory from '../utils/customHistory';
 
+import Connection from '../connection/Connection';
+
 import { Switch, Router } from 'react-router-dom';
 import { Route } from 'react-router';
 
@@ -34,6 +36,7 @@ const SemDemo = () => (
             animation="push"
             title={title}
         >
+        <Connection />
             <Switch>
                 <Route path="/about" component={About}/>
                 <Route path="/contact" component={Contact}/>

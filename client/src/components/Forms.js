@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import { Button, Icon } from 'semantic-ui-react';
-import { ImageCard } from './Card';
-import '../stylesheets/forms.css';
 
+import '../stylesheets/forms.css';
 
 
 class InfoForm extends Component {
@@ -10,13 +9,12 @@ class InfoForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: '',
-            content: '',
-            picUrl: '',
             invalidPicUrl: false,
             invalidTitle: false,
             invalidContent: false,
+            submitEnabled: false,
         }
+        this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.updatePicUrl = this.updatePicUrl.bind(this);
         this.updateTitle = this.updateTitle.bind(this);
         this.updateContent = this.updateContent.bind(this);
@@ -24,50 +22,81 @@ class InfoForm extends Component {
 
     updateTitle(evt) {
        let title = evt.target.value;
+       this.props.onFormChange('title', title);
        if(title.length < 3) {
            this.setState({invalidTitle: true,});
        } else {
-           this.setState({invalidTitle:false, title: title})
+           this.setState({invalidTitle:false});
        }
     }
 
     updateContent(evt) {
-        let content = evt.target.value;
+        let content = evt.target.value; 
+        this.props.onFormChange('content', content);
         if (content.length < 10) {
             this.setState({invalidContent: true,});
         } else {
-            this.setState({invalidContent: false, content: content});
+            this.setState({invalidContent: false});
         }
     }
 
     updatePicUrl(evt) {
         let regex = new RegExp(/[-a-zA-Z0-9@:%_.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_.~#?&//=]*)?/gi);
         let picUrl = evt.target.value;
-        console.log(picUrl);
+        
+        this.props.onFormChange('picUrl', picUrl);
         if(picUrl.match(regex)) {
-            this.setState({ picUrl: evt.target.value, invalidPicUrl: false,})
+            this.setState({invalidPicUrl: false})
         } else {
             this.setState({ invalidPicUrl : true, });
-            console.log('should be invalid');
         }
         
     }
 
+    handleFormSubmit(evt) {
+        evt.preventDefault();
+        
+        let post = {
+            title : this.props.title,
+            content : this.props.content,
+            imageURL : this.props.picUrl,
+            postDate : (new Date()),
+        }
+        this.titleInput.value = "";
+        this.imageInput.value = "";
+        this.contentTextArea.value = "";
+        this.props.onButtonClick(post)
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        if((nextProps.title.length >= 3  && !nextState.invalidTitle) 
+            && (nextProps.content.length >= 10 && !nextState.invalidContent)
+            && ((nextProps.picUrl.length > 0) && !nextState.invalidPicUrl)
+        ) {
+            nextState.submitEnabled = true;
+        } else {
+            nextState.submitEnabled = false;
+        }
+
+    }
+
     render() {
 
-        const { title, content, picUrl, invalidPicUrl, invalidTitle, invalidContent } = this.state;
+        const {invalidPicUrl, invalidTitle, invalidContent, submitEnabled } = this.state;
         const invalidTitleMessage = `Any decent title is at least 3 letters long...`;
         const invalidContentMessage = "All content should have at least 10 letters...";
         const invalidURLMessage = "The URL provided is not valid";
+        
         return(     
             <div className="ui segment form-container" >
                 <form className="ui form infoForm">
                     <div className="field">
                         <input
+                            ref={ref => this.titleInput = ref }
                             type="text"
                             name="title"
                             placeholder="Title"
-                            onBlur={this.updateTitle}
+                            onChange={this.updateTitle}
                             required
                         />
                         <label htmlFor="title"></label>
@@ -75,8 +104,10 @@ class InfoForm extends Component {
                     </div>
                     <div className="field">
                         <input
+                            ref={ref => this.imageInput = ref}
+                            id="imageInput"
                             type="text"
-                            onBlur={this.updatePicUrl}
+                            onChange={this.updatePicUrl}
                             name="pictureURL"
                             placeholder="Picture URL"
                             required
@@ -86,20 +117,32 @@ class InfoForm extends Component {
                     </div>
                     <div className="field">
                         <textarea
+                            ref={ref => this.contentTextArea = ref}
+                            id="contentTextArea"
                             minLength="20"
                             placeholder="Content"
                             name="blog-post"
-                            onBlur={this.updateContent}
+                            onChange={this.updateContent}
                             required
                             cols="30" rows="4"></textarea>
                         <label htmlFor="blog-post"></label>
                         {(invalidContent) ? <div className="invalidInput">{invalidContentMessage}</div> : ''}
                     </div>
-                    <div id="addPostButton" className="ui clearing segment" >
-                        <Button floated="right" animated positive>
+                    <div 
+                        id="addPostButton"
+                        className="ui clearing segment"
+                    >
+                        <Button 
+                            
+                            floated="right" 
+                            animated 
+                            positive
+                            onClick={this.handleFormSubmit}
+                            disabled={!submitEnabled}
+                        >
                             <Button.Content visible>
                                 PostIt!
-                    </Button.Content>
+                            </Button.Content>
                             <Button.Content hidden>
                                 <Icon name='plus' />
                             </Button.Content>

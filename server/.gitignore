@@ -1,20 +1,15 @@
-/rethinkdb_data/*
-
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
-/client/node_modules
-/server/node_modules
+/node_modules
 
 # testing
 /coverage
 
 # production
-/client/build
-/server/build
+/build
 
-/client/yarn.lock
-/server/yarn.lock
+yarn.lock
 
 # misc
 .DS_Store

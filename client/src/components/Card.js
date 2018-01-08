@@ -22,11 +22,13 @@ const Card = () => (
 class ImageCard extends React.Component {
     render() {
         let options = {year: 'numeric', month: 'long', day: 'numeric'};
-        const todaysDate = new Date().toLocaleDateString("en-US", options);
+        let postDate = (this.props.postDate) ? (new Date(this.props.postDate)) : (new Date());
+        postDate = postDate.toLocaleDateString("en-US", options);
+
         return (
-            <div className="ui card">
+            <a className="ui card" onClick={this.props.onClick}>
                 <div className="image">
-                    <img src={this.props.image} width="150" height="150" alt="" />
+                    <img src={this.props.image} alt="Could not retrieve" width="150" height="150" />
                 </div>
                 <div className="content">
                     <div className="header">{this.props.title}</div>
@@ -34,10 +36,12 @@ class ImageCard extends React.Component {
                         {this.props.content}...
                     </div>
                 </div>
-                <div className="extra-content">
-                    <span className="right floated">Posted {todaysDate}</span>
+                <div 
+                    className="extra content"
+                >
+                    <span className="right floated">Posted {postDate}</span>
                 </div>
-            </div>
+            </a>
             
         );
 
