@@ -6,10 +6,9 @@ import Contact from './Contact';
 import Demo from './Demo';
 import Login from './Login';
 import Blog from './Blog';
+import Article from './Article';
 
 import customHistory from '../utils/customHistory';
-
-import Connection from '../connection/Connection';
 
 import { Switch, Router } from 'react-router-dom';
 import { Route } from 'react-router';
@@ -28,7 +27,7 @@ const title = "Whiskey";
 
 
 const SemDemo = () => (
-    <Router history={customHistory} >
+    <Router history={customHistory}>
         <NavBar 
             styles={{ backgroundColor: '#455A64'}}
             inverted
@@ -36,12 +35,12 @@ const SemDemo = () => (
             animation="push"
             title={title}
         >
-        <Connection />
             <Switch>
                 <Route path="/about" component={About}/>
                 <Route path="/contact" component={Contact}/>
                 <Route path="/login" component={Login}/>
                 <Route path="/blog" component={Blog}/>
+                <Route exact path="/post/:postId" component={Article}/>
                 <Route path="/" component={Demo}/>
             </Switch>
         </NavBar>

@@ -11,7 +11,7 @@
   "author": "whiskeyromeo",
   "license": "ISC",
   "dependencies": {
-    "nodemon": "^1.14.9",
+    "nodemon": "^1.14.10",
     "rethinkdb": "^2.3.3",
     "socket.io": "^2.0.4"
   }

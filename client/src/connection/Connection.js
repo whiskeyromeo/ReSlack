@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { subscribeToConnection, connectionEstablished } from './api';
+import { subscribeToConnection } from './api';
 
 class Connection extends Component {
     state = {
@@ -20,7 +20,6 @@ class Connection extends Component {
     }
 
     render() {
-        connectionEstablished('Connecting from the client Connection Component');
         let content = null;
         if(this.state.connection === 'disconnected') {
             content = (

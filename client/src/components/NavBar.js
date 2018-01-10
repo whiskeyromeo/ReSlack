@@ -1,6 +1,6 @@
 /*
     Base code for this was from https://codesandbox.io/s/325y47xk36
-    I did some modifications to try and make it more portable/adaptable to
+    I did a number of modifications to try and make it more portable/adaptable to
     edge cases
 
     The NavBar Component takes the parameters
@@ -22,7 +22,9 @@ import {
     Sidebar,
     Responsive
 } from 'semantic-ui-react';
-import MenuItem from 'semantic-ui-react/dist/commonjs/collections/Menu/MenuItem';
+
+import { MenuItem } from 'semantic-ui-react';
+import Connection from '../connection/Connection';
 
 import '../stylesheets/navbar.css';
 
@@ -81,6 +83,9 @@ const NavBarMobile = ({
                                 <Menu.Item className="menuItems" {...item} />
                             </Link>
                         )}
+                        <Menu.Item className="menuItems">
+                            <Connection />
+                        </Menu.Item>
                     </Menu.Menu>
                 </Menu>
                 {children}

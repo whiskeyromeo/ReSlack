@@ -3,9 +3,9 @@ import '../stylesheets/blog.css';
 import React, { Component } from 'react';
 import { Button, Transition, Divider } from 'semantic-ui-react';
 
+import Article from './Article';
 import { ImageCard } from './Card';
 import { InfoForm } from './Forms';
-import { PostModal } from './PostModal';
 
 import { createPost, subscribeToPosts } from '../connection/api';
 
@@ -71,8 +71,9 @@ class Blog extends Component {
     constructor() {
         super();
         this.state = {
-            showForm: true,
+            showForm: false,
             posts : [],
+            selectedPost: null,
         }
 
         subscribeToPosts((post) => {
@@ -85,6 +86,7 @@ class Blog extends Component {
         this.renderPost = this.renderPost.bind(this);
         this.toggleForm = this.toggleForm.bind(this);
         this.selectPost = this.selectPost.bind(this);
+        this.unselectPost = this.unselectPost.bind(this);
     }
 
     toggleForm() {
@@ -93,27 +95,26 @@ class Blog extends Component {
 
     selectPost(post) {
         console.log(post.id);
-        this.setState({ selectedPost : post })
-        
+        this.setState({ selectedPost : post.id });
+    }
+
+    unselectPost() {
+        this.setState({selectedPost: null});
+
     }
 
     renderPost(i) {
         const post = this.state.posts[i];
-        return (
-            <PostModal 
+        return (  
+            <ImageCard
                 key={post.id}
+                id={post.id}
+                title={post.title}
+                content={post.content}
+                image={post.imageURL}
+                postDate={post.postDate}
                 post={post}
-                trigger={
-                    <ImageCard
-                        key={post.id}
-                        title={post.title}
-                        content={post.content}
-                        image={post.imageURL}
-                        postDate={post.postDate}
-                        onClick={evt => this.selectPost(post)}
-                    /> 
-                }
-             />
+            />
         )
     }
 
@@ -124,36 +125,44 @@ class Blog extends Component {
     }
 
     render() {
-        const { showForm, posts } = this.state;
+        const { showForm, posts, selectedPost } = this.state;
 
-        return (
+        const article = (
+            <Article post={selectedPost} returnToBlog={this.unselectPost} />
+        )
+
+        const content = (
             <div className="ui container component" >
                 <div id="addBlogContainer" className="ui clearing segment">
                     <h2 id="blogTitle">Some Simple Blog</h2>
-                    <Button 
+                    <Button
                         floated="right"
                         color="orange"
                         onClick={this.toggleForm}
                     >
-                        {(showForm) ? 'Hide the Form' : 'Add A Post' }
+                        {(showForm) ? 'Hide the Form' : 'Add A Post'}
                     </Button>
                 </div>
                 <Transition visible={showForm} animation='scale' duration={1000} >
                     <div>
-                        <BlogTop 
+                        <BlogTop
                             handleFormSubmit={this.addPost}
                         />
                     </div>
                 </Transition>
-                <div id="blogPostContainer" className="ui three stackable cards">
-                    {posts.map((x,i) => {
+                <div id="blogPostContainer" className="ui four stackable cards">
+                    {posts.map((x, i) => {
                         return this.renderPost(i);
                     })}
                 </div>
                 <Divider />
             </div>
         );
-    }
+        if(selectedPost)
+            return article;
+        else    
+            return content
+    }   
 }
 
 export default Blog;

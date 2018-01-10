@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Card = () => (
     <div className="ui card">
@@ -21,12 +22,14 @@ const Card = () => (
 
 class ImageCard extends React.Component {
     render() {
-        let options = {year: 'numeric', month: 'long', day: 'numeric'};
+        // TODO : For some reason I am having a difficult time 
+        // accessing objects from in here, perhaps need to spread?
+        const post = this.props.post
+        const options = {year: 'numeric', month: 'long', day: 'numeric'};
         let postDate = (this.props.postDate) ? (new Date(this.props.postDate)) : (new Date());
         postDate = postDate.toLocaleDateString("en-US", options);
-
         return (
-            <a className="ui card" onClick={this.props.onClick}>
+            <Link className="ui card" to={{pathname: `/post/${this.props.id}`, state: post }} >
                 <div className="image">
                     <img src={this.props.image} alt="Could not retrieve" width="150" height="150" />
                 </div>
@@ -41,7 +44,7 @@ class ImageCard extends React.Component {
                 >
                     <span className="right floated">Posted {postDate}</span>
                 </div>
-            </a>
+            </Link>
             
         );
 

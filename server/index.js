@@ -1,14 +1,31 @@
 const io = require('socket.io')();
 const r = require('rethinkdb');
 
-
+// Push a new post into the db
 function createPost({ connection, post }) {
     r.table('posts')
         .insert(post)
         .run(connection).then(() => {
-
-            console.log('created a post with title : ', post.title);
+            //console.log('created a post with title : ', post.title);
         });
+}
+
+// This function retrieves a single post and sends it back to the client
+function getSinglePost({ client, connection, postId }) {
+    let post = r.table('posts')
+        .get(postId)
+        .run(connection)
+        .then((res) => {
+            client.emit(`post:${postId}`, res);
+        })
+}
+
+// publish a new Article
+function handleArticlePublish({ connection, article, callback }) {
+    r.table('articles')
+        .insert(Object.assign(article, { timestamp: new Date() }))
+        .run(connection)
+        .then(callback)
 }
 
 // This retrieves all posts from the post table and sends them over to the client
@@ -23,15 +40,28 @@ function subscribeToPosts({ client, connection }) {
         });
 }
 
-// This function retrieves a single post and sends it back to the client
-function getSinglePost({client, connection, postId}) {
-    let post = r.table('posts')
-        .get(postId)
+// 
+function subscribeToPostArticle({ client, connection, postId, from }) {
+    let query = r.row('postId').eq(postId);
+
+    if(from) {
+        query = query.and(
+            // Only get the most recent data
+            r.row('timestamp').ge(new Date(from))
+        );
+    }
+
+    return r.table('articles')
+        .filter(query)
+        .changes({include_initial: true})
         .run(connection)
-        .then((res) => {
-            client.emit(`post:${postId}`, res);
-            console.log(res);
-        })
+        .then((cursor) => {
+            cursor.each((err, articleRow) => client.emit(
+                `article:${postId}`,
+                articleRow.new_val
+            ));
+        });
+
 }
 
 
@@ -42,14 +72,20 @@ r.connect({
 }).then((connection) => {
     
     io.on('connection', (client) => {
-        
-        client.on('checkValidConnection', ({msg}) => {
-            console.log('message : ', msg);
-        })
 
         // Create a new Post
         client.on('createPost', ({post}) => {
             createPost({connection, post});
+        });
+
+        client.on('publishArticle', (article, callback) => handleArticlePublish({
+            article,
+            connection,
+            callback,
+        }));
+
+        client.on('retrievePost', ({postId}) => {
+            getSinglePost({client, connection, postId})
         });
 
         // get all posts
@@ -58,16 +94,19 @@ r.connect({
             connection
         }));
 
-        client.on('retrievePost', ({postId}) => {
-            getSinglePost({client, connection, postId})
-        })
-
-
-    })
-
-
+        client.on('subscribeToPostArticle', ({postId, from }) => {
+            subscribeToPostArticle({
+                client,
+                connection,
+                postId,
+                from,
+            });
+        });
+    });
 });
 
-const port = parseInt(process.argv[2], 10) || 9000;
-io.listen(port);
+
+const port = parseInt(process.argv[3], 10) || 9000;
+
+io.listen(port)
 console.log('server listening on port ', port);
