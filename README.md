@@ -24,3 +24,7 @@ everything will be relatively easy to port/reuse as needed.
 > cd client && yarn start
 >```
 
+### Next Steps
+- Refactor/Add in Redux in order to better follow SRP
+- Add Auth
+- 

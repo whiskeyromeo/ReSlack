@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SemDemo from './components/semanticTest';
+import SemDemo from './components/DemoApp';
 import './stylesheets/universal.css';
 
 

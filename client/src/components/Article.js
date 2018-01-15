@@ -51,6 +51,10 @@ class Article extends Component {
         this.setState({ post: post });
     }
 
+    /**
+     * A method to ensure the Observable stream is put into place, 
+     * even if the user accesses the site via the url directly
+     */
     ensureSubscription() {
         this.setState({ isSubscribed: true });
         subscribeToPostArticle(this.state.post.id, (articleEvent) => {
@@ -84,6 +88,10 @@ class Article extends Component {
         
     }
 
+    /**
+     * Scrolls to the bottom of the container so that the focus is
+     * always on the most recently accessed article
+     */
     scrollToBottom() {
         this.scrollContainer.scrollIntoView({ behaviour : 'smooth'});
     }

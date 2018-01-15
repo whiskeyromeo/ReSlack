@@ -28,6 +28,7 @@ class ImageCard extends React.Component {
         const options = {year: 'numeric', month: 'long', day: 'numeric'};
         let postDate = (this.props.postDate) ? (new Date(this.props.postDate)) : (new Date());
         postDate = postDate.toLocaleDateString("en-US", options);
+        
         return (
             <Link className="ui card" to={{pathname: `/post/${this.props.id}`, state: post }} >
                 <div className="image">

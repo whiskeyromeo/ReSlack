@@ -20,11 +20,8 @@ function deletePost(postId) {
 
 // publish changes from an article to the db
 function publishArticle({ postId, article }) {
-    console.log('hitting publish article');
     //sync.queue({ postId, article });
-    socket.emit('publishArticle', { postId, article }, () => {
-        console.log('article published successfully : ', article);
-    })
+    socket.emit('publishArticle', { postId, article }, () => {})
 }
 // Retrieve a particular post
 // Currently just outputs the post to the console
@@ -37,6 +34,7 @@ function retrievePost(postId, cb) {
 // any real time updates to the article/collaborate with others
 function subscribeToPostArticle(postId, cb) {
     const articleStream = Rx.Observable.fromEventPattern(
+        // Handle the messages between the server and client
         h => socket.on(`article:${postId}`, h),
         h => socket.off(`article:${postId}`, h),
     );

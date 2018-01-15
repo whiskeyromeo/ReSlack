@@ -3,7 +3,10 @@ import { Button, Icon } from 'semantic-ui-react';
 
 import '../stylesheets/forms.css';
 
-
+/**
+ * Provides a basic information form via which a user can enter
+ * a title. desc
+ */
 class InfoForm extends Component {
 
     constructor(props) {
@@ -20,6 +23,10 @@ class InfoForm extends Component {
         this.updateContent = this.updateContent.bind(this);
     } 
 
+    /**
+     * Update current title based on the form title value
+     * @param evt The click event
+     */
     updateTitle(evt) {
        let title = evt.target.value;
        this.props.onFormChange('title', title);
@@ -30,6 +37,10 @@ class InfoForm extends Component {
        }
     }
 
+    /**
+     * Update current content based on the form content value
+     * @param evt The click event
+     */
     updateContent(evt) {
         let content = evt.target.value; 
         this.props.onFormChange('content', content);
@@ -40,6 +51,10 @@ class InfoForm extends Component {
         }
     }
 
+    /**
+     * Update current imageURL based on the form imageURL value
+     * @param evt The click event
+     */
     updatePicUrl(evt) {
         let regex = new RegExp(/[-a-zA-Z0-9@:%_.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_.~#?&//=]*)?/gi);
         let picUrl = evt.target.value;
@@ -53,6 +68,11 @@ class InfoForm extends Component {
         
     }
 
+    /**
+     * Deal with the form submission, passing the value from 
+     * The inputs back to the parent component of the form
+     * @param evt The form submission event
+     */
     handleFormSubmit(evt) {
         evt.preventDefault();
         

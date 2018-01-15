@@ -31,7 +31,7 @@ class Connection extends Component {
         if(this.state.connection === 'connect_error') {
             content = (
                 <div className="connection-error">
-                    <p>Could not connect</p>
+                    <p>Could not connect...</p>
                 </div>
             )
         }
@@ -40,6 +40,11 @@ class Connection extends Component {
                 <div>
                     <p>Connecting...</p>
                 </div>
+            )
+        }
+        if(this.state.connection === 'connected') {
+            content = (
+                <div><p>Connected</p></div>
             )
         }
 
