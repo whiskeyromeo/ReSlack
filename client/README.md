@@ -31,7 +31,7 @@ everything will be relatively easy to port/reuse as needed.
 - 4. Generalize the api to work with different databases
 
 ### ScratchBoard - Contrib
-- The idea behind this application is to provide a means for individuals to collatbotae in the production of web articles
+- The idea behind this application is to provide a means for individuals to collaborate in the production of web articles
 - It would be nice if there was some way to set it up in such a way as to allow for the use of interchangeable components
 - This is an architecture issue
 - The main point of the app is o provide a baseline architecture from which we can interchange components 
