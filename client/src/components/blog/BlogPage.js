@@ -17,7 +17,8 @@ class BlogPage extends React.Component {
     }
 
     toggleFormContainer() {
-        if (this.refs.testRef)
+        console.log('coming from toggleform');
+        if (!this.refs.testRef)
             this.setState({showForm: !this.state.showForm});
     }
 

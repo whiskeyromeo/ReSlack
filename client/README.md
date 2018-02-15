@@ -29,3 +29,17 @@ everything will be relatively easy to port/reuse as needed.
 - 2. Fix the issue of state persistance by incorporating Redux with Sagas or Thunks( whichever works better with socket-io subscribe??...)
 - 3. Incorporate basic authentication
 - 4. Generalize the api to work with different databases
+
+### ScratchBoard - Contrib
+- The idea behind this application is to provide a means for individuals to collatbotae in the production of web articles
+- It would be nice if there was some way to set it up in such a way as to allow for the use of interchangeable components
+- This is an architecture issue
+- The main point of the app is o provide a baseline architecture from which we can interchange components 
+- That is: 
+    - The clients and servers should interface through well defined API endpoints 
+        - ( currently Socket --> perhaps a GraphQL implementation is warranted?)
+    - Configuration files should be used to provide the individual permissions/classnames/ids of the components
+        - Hardcoding works against the interchangeability, it is an antipattern in this manner
+    - Find a new way to integrate testing. It seems as though the best idea might not be to include all of the tests files
+    in the same directories as the files being tested. This will probably require a little bit of trial and error
+    to find the best method which scales appropriately. 
