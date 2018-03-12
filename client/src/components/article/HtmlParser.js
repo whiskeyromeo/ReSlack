@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import { options } from './parserConfig';
+import { timeSince } from '../../utils/common';
 
 class HtmlParser extends Component {
     constructor(props) {
@@ -9,15 +10,19 @@ class HtmlParser extends Component {
     }
 
     handleClick(evt) {
-        console.log('evt: ', evt.target);
+        // 
     }
 
     
     render() {
-        const html = this.props.content;
+        const html = this.props.content.article;
+        const createdDate = new Date(this.props.content.timestamp);
+        const timeSinceArticle = timeSince(createdDate);
+        // console.log(createdDate);
         return (
-            <div className="parser-content" style={{border: '1px solid black'}} onClick={this.handleClick}>
+            <div className="parser-content" onClick={this.handleClick}>
                 {ReactHtmlParser(html, options)}
+                <div className="parserTimeBlock right floated"> created { timeSinceArticle } ago</div>
             </div>
         );
     }

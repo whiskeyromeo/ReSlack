@@ -4,7 +4,7 @@ class HomePage extends React.Component {
     render() {
         return(
             <div className="component">
-                <h1 className="wonkified">Welcome to the App</h1>
+                <h1>Welcome to the App</h1>
                 <br/>
                 <hr/>
                 <h3>Overview</h3>

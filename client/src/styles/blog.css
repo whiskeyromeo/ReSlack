@@ -8,6 +8,7 @@
 #addBlogContainer {
     border: none;
     box-shadow: none;
+    width: 100%;
 }
 
 #blogPostContainer {

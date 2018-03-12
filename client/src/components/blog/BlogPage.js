@@ -30,7 +30,7 @@ class BlogPage extends React.Component {
             <div className="ui container component">
                 <div id="addBlogContainer" className="ui clearing">
                 <div className="ui clearing grid">
-                    <h2 id="blogTitle" className="thirteen wide column">The Simple Real Time Way to Post</h2>
+                    <h2 id="blogTitle" className="thirteen wide column">Add A New Post!</h2>
                     <div className="three wide column">
                         <Button 
                             color="vk"

@@ -11,8 +11,9 @@ import NavBar from './navbar/NavBar';
 import customHistory from '../utils/customHistory';
 
 import routes from '../routes';
+import { APP_TITLE } from '../config/string_config';
 
-const title="Whiskey";
+const title=APP_TITLE;
 
 
 class App extends React.Component {

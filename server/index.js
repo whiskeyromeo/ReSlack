@@ -1,9 +1,10 @@
 const io = require('socket.io')();
 const r = require('rethinkdb');
+const config = require('./config');
 
 // Push a new post into the db
 function createPost({ connection, post }) {
-    r.table('posts')
+    r.db(config.DB_NAME).table('posts')
         .insert(post)
         .run(connection).then(() => {
             //console.log('created a post with title : ', post.title);
@@ -12,7 +13,7 @@ function createPost({ connection, post }) {
 
 // This function retrieves a single post and sends it back to the client
 function getSinglePost({ client, connection, postId }) {
-    let post = r.table('posts')
+    let post = r.db(config.DB_NAME).table('posts')
         .get(postId)
         .run(connection)
         .then((res) => {
@@ -22,7 +23,7 @@ function getSinglePost({ client, connection, postId }) {
 
 // publish a new Article
 function handleArticlePublish({ connection, article, callback }) {
-    r.table('articles')
+    r.db(config.DB_NAME).table('articles')
         .insert(Object.assign(article, { timestamp: new Date() }))
         .run(connection)
         .then(callback)
@@ -30,7 +31,7 @@ function handleArticlePublish({ connection, article, callback }) {
 
 // This retrieves all posts from the post table and sends them over to the client
 function subscribeToPosts({ client, connection }) {
-    r.table('posts')
+    r.db(config.DB_NAME).table('posts')
         .changes({include_initial: true})
         .run(connection)
         .then((cursor) => {
@@ -51,7 +52,7 @@ function subscribeToPostArticle({ client, connection, postId, from }) {
         );
     }
 
-    return r.table('articles')
+    return r.db(config.DB_NAME).table('articles')
         .filter(query)
         .changes({include_initial: true})
         .run(connection)
@@ -64,13 +65,12 @@ function subscribeToPostArticle({ client, connection, postId, from }) {
 
 }
 
-
 r.connect({
     host:'localhost',
     port: 28015,
-    db: 'basicblog',
+    database: config.DB_NAME
 }).then((connection) => {
-    
+
     io.on('connection', (client) => {
 
         // Create a new Post
@@ -104,7 +104,6 @@ r.connect({
         });
     });
 });
-
 
 const port = parseInt(process.argv[3], 10) || 9000;
 

@@ -1,45 +1,37 @@
 Last updated January 7, 2018
 
 ### Overview
-- This is a variety of components I have started to put together in the past week after not
-having touched React in close to two years. Trying to follow best practices here so hopefully
-everything will be relatively easy to port/reuse as needed.
-- The front end design is supported by Semantic-UI
+
+This is a fun little toy application which I have been using to explore React in its current form after having been away from the framework for close to two years. 
+
+The basic idea of the application is to provide a way for people in an organization to share design ideas in a chat or 'post'. Currently the configuration only supports html5 markup and inline css styling, but I think it would be nice to add some support for additional features in the future such as external styling and editing of the chats themselves.
+
+Right now the functionality only allows for the creation of posts and articles (each entry by a user in a post) associated with those posts.
+
+The front end design is supported by Semantic-UI and the semantic-react library. As this is the case the components imported into the application can be used directly in the chat.
 
 
 ### Setup 
-- install dependencies, I've been using yarn but you can use npm as well.
-- You'll need rethinkdb with the current setup so follow the instructions on their site to install that
-- Once the db is up, create a db 'basicblog' with 2 tables : posts, articles
-- run rethinkdb
+- Install dependencies, this should work with both yarn and npm.
+- You'll need rethinkdb in order for the streaming functionality to work. You can find installation instructions [on their site](https://www.rethinkdb.com/)
+- Once the db is up, run the database
 >```
 >rethinkdb
 >```
-- run the server
+- Following this you will need to open the GUI for rethinkdb and create
+a new database 'basicblog' (as specified in config.js on the server), and two tables: posts and articles.
+- Now you should be able to run the server
 >```
 > cd server && yarn start
 >```
-- run the client
+- and the client
 >```
 > cd client && yarn start
 >```
 
 ### Next Steps
-- 1. Incorporate editing of previous posts in the article to enable full collaboration
+- 1. Incorporate editing of previous articles in the post to enable full collaboration and editing
 - 2. Fix the issue of state persistance by incorporating Redux with Sagas or Thunks( whichever works better with socket-io subscribe??...)
 - 3. Incorporate basic authentication
 - 4. Generalize the api to work with different databases
 
-### ScratchBoard - Contrib
-- The idea behind this application is to provide a means for individuals to collaborate in the production of web articles
-- It would be nice if there was some way to set it up in such a way as to allow for the use of interchangeable components
-- This is an architecture issue
-- The main point of the app is o provide a baseline architecture from which we can interchange components 
-- That is: 
-    - The clients and servers should interface through well defined API endpoints 
-        - ( currently Socket --> perhaps a GraphQL implementation is warranted?)
-    - Configuration files should be used to provide the individual permissions/classnames/ids of the components
-        - Hardcoding works against the interchangeability, it is an antipattern in this manner
-    - Find a new way to integrate testing. It seems as though the best idea might not be to include all of the tests files
-    in the same directories as the files being tested. This will probably require a little bit of trial and error
-    to find the best method which scales appropriately. 

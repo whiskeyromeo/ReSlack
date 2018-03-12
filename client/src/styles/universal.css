@@ -1,11 +1,28 @@
+@import url('https://fonts.googleapis.com/css?family=Mina');
+
 .component {
     min-height: 100vh
 }
 
-.wonkified {
-    transform: rotate(-4deg);
+body {
+    font-family: 'Mina', sans-serif;
 }
 
-.really-wonkified {
-    transform: rotate(-45deg);
+h1, h2, h3, h4 {
+    font-family: 'Mina',
+    sans-serif;
+}
+
+pre {
+    background: whitesmoke;
+    padding: 10px;
+}
+
+.pusher > .ui.container {
+    width: 95%;
+}
+
+div.ui.container.component {
+    margin-left: 0px !important;
+    margin-right: -10 !important;
 }

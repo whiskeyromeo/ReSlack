@@ -6,8 +6,6 @@ import _ from 'lodash';
 import { publishArticle, retrievePost, subscribeToPostArticle } from '../../api/api';
 import HtmlParser from './HtmlParser';
 
-import { Divider } from 'semantic-ui-react';
-
 class Article extends Component {
 
     constructor(props) {
@@ -16,11 +14,13 @@ class Article extends Component {
             post: null,
             articles: [],
             isSubscribed: false,
+            submitButtonDisabled: true,
         };
         this.ensureSubscription = this.ensureSubscription.bind(this);
         this.resetArticleState = this.resetArticleState.bind(this);
         this.scrollToBottom = this.scrollToBottom.bind(this);
         this.updateArticle = this.updateArticle.bind(this);
+        this.updateSubmitButtonState = this.updateSubmitButtonState.bind(this);
     }
     
     componentWillMount() {
@@ -100,11 +100,22 @@ class Article extends Component {
      */
     updateArticle() {
         let article = this.refs.articleContent.value;
+        if(this.refs.articleContent.value.length === 0) {
+            return;
+        }
         this.refs.articleContent.value = '';
         publishArticle({
             postId: this.state.post.id,
             article: article
         });
+    }
+
+    updateSubmitButtonState(event) {
+        if (event.target.value.length > 0) {
+            this.setState({submitButtonDisabled: false});
+        } else {
+            this.setState({submitButtonDisabled: true});
+        }
     }
 
     /**
@@ -113,25 +124,23 @@ class Article extends Component {
     render() {
         const post = this.state.post;
         const articles = this.resetArticleState();
-
         if (this.state.post) {
             return (
                 <div className="component">
                     <div className="ui secondary pointing menu">
                         <div className="item">
-                            <p>Check</p>
+                            Content Resides below
                         </div>
 
                     </div>
                     <div className="ui segment">
-                        <h1 className="ui center aligned header">{post.title}</h1>
-                        <Divider />
+                        <h1 className="ui center aligned header article-header">{post.title}</h1>
                         <div className="scrolling content">
                             {
                                 articles.map((x, i) => {
 
                                     return (post.id === x.postId) ?
-                                        <HtmlParser content={x.article} key={x.id} />
+                                        <HtmlParser content={x} key={x.id} />
                                         : '';
 
                                 })
@@ -142,9 +151,9 @@ class Article extends Component {
                     </div>
                     <div className="ui form">
                         <div className="field">
-                            <textarea ref="articleContent" rows="2" />
+                            <textarea ref="articleContent" onChange={this.updateSubmitButtonState} rows="2" />
                         </div>
-                        <button onClick={this.updateArticle} className="ui button primary" > Add Content</button>
+                        <button onClick={this.updateArticle} disabled={this.state.submitButtonDisabled} className="ui button primary" > Add Content</button>
                     </div>
 
                 </div>
